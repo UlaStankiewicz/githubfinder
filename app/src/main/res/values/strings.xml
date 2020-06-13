@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">GitHubFinder</string>
+    <string name="app_name_title">GitHub Finder</string>
+    <string name="main_fragment">MainFragment</string>
+    <string name="detail_fragment">DetailFragment</string>
+    <string name="repo_detail_fragment_title">Repository details</string>
+    <string name="previously_searched_repositories">Previously searched repositories</string>
+    <string name="commit_message">Commit message:</string>
+    <string name="sha">SHA:</string>
+    <string name="author">Author:</string>
+    <string name="example_message">This is example message</string>
+    <string name="example_sha">np3421331321321323</string>
+    <string name="example_author">Natalia Nazaruk</string>
+    <string name="search_repositories">Search repositories</string>
+    <string name="no_repositories_yet">No repositories yet</string>
+    <string name="owner_repository">owner/repository</string>
+    <string name="search_for_repositories">Search for repositories</string>
+    <string name="search">Search</string>
+    <string name="slash_symbol">/</string>
+</resources>

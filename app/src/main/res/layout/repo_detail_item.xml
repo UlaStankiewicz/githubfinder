@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="repositoryDetails"
+            type="pl.nataliana.githubfinder.model.RepositoryCommits" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_padding_small">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:orientation="vertical"
+            android:padding="@dimen/default_padding_small">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/default_padding_small">
+
+                <TextView
+                    android:id="@+id/commit_message_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/commit_message"
+                    android:textSize="@dimen/default_text_size_small"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/commit_message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="@string/example_message"
+                    android:textSize="@dimen/default_text_size_small" />
+<!--                    app:commitMessage="@{repositoryDetails.commit.message}" />-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/default_padding_small">
+
+                <TextView
+                    android:id="@+id/commit_sha_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/sha"
+                    android:textSize="@dimen/default_text_size_small"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/commit_sha"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="@string/example_sha"
+                    android:textSize="@dimen/default_text_size_small" />
+<!--                    app:commitSha="@{repositoryDetails.commit.sha}" />-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/default_padding_small">
+
+                <TextView
+                    android:id="@+id/commit_author_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/author"
+                    android:textSize="@dimen/default_text_size_small"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/commit_author"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="@string/example_author"
+                    android:textSize="@dimen/default_text_size_small" />
+<!--                    app:commitAuthor="@{repositoryDetails.commit.author}" />-->
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>
