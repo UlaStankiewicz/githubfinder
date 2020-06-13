@@ -44,8 +44,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="@string/example_message"
+                    app:commitMessage="@{repositoryDetails}"
                     android:textSize="@dimen/default_text_size_small" />
-<!--                    app:commitMessage="@{repositoryDetails.commit.message}" />-->
             </LinearLayout>
 
             <LinearLayout
@@ -69,8 +69,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="@string/example_sha"
+                    app:commitSha="@{repositoryDetails}"
                     android:textSize="@dimen/default_text_size_small" />
-<!--                    app:commitSha="@{repositoryDetails.commit.sha}" />-->
             </LinearLayout>
 
             <LinearLayout
@@ -94,8 +94,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="@string/example_author"
+                    app:commitAuthor="@{repositoryDetails}"
                     android:textSize="@dimen/default_text_size_small" />
-<!--                    app:commitAuthor="@{repositoryDetails.commit.author}" />-->
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
