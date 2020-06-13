@@ -19,5 +19,5 @@ interface GithubFinderApi {
     suspend fun getCommitsInRepository(
         @Path("user") user: String,
         @Path("repo") repo: String
-    ): Response<RepositoryCommits>
+    ): Response<List<RepositoryCommits>>
 }

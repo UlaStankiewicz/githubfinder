@@ -30,9 +30,10 @@ class GithubFinderApiClientImpl(private val githubFinderApi: GithubFinderApi) :
     override suspend fun getCommitsInRepository(
         user: String,
         repo: String
-    ): Resource<RepositoryCommits> = withContext(Dispatchers.IO) {
+    ): Resource<List<RepositoryCommits>> = withContext(Dispatchers.IO) {
         try {
-            val response: Response<RepositoryCommits> = githubFinderApi.getCommitsInRepository(user, repo)
+            val response: Response<List<RepositoryCommits>> =
+                githubFinderApi.getCommitsInRepository(user, repo)
             if (response.isSuccessful) {
                 Resource.success(response.body())
 
@@ -40,7 +41,7 @@ class GithubFinderApiClientImpl(private val githubFinderApi: GithubFinderApi) :
                 Resource.error(response.message())
             }
         } catch (ex: Throwable) {
-            Resource.error<RepositoryCommits>("${ex.message}")
+            Resource.error<List<RepositoryCommits>>("${ex.message}")
         }
     }
 }

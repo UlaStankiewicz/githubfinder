@@ -10,7 +10,7 @@ class RepositoryDetailViewModel(
 ) : ViewModel() {
 
     private val viewModelJob = Job()
-    val repositoryCommits: ObservableField<RepositoryCommits> = ObservableField()
+    val repositoryCommits: ObservableField<List<RepositoryCommits>> = ObservableField()
 
     override fun onCleared() {
         super.onCleared()
