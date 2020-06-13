@@ -43,7 +43,7 @@ class GithubRepositoryAdapter(private val clickListener: RepositoryListener) :
 class GithubRepositoryDiffCallback :
     DiffUtil.ItemCallback<GithubRepository>() {
     override fun areItemsTheSame(oldItem: GithubRepository, newItem: GithubRepository): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.repoName == newItem.repoName
     }
 
     override fun areContentsTheSame(oldItem: GithubRepository, newItem: GithubRepository): Boolean {
