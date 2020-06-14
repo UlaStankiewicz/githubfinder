@@ -2,34 +2,33 @@ package pl.nataliana.githubfinder
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import pl.nataliana.githubfinder.model.GithubRepository
 import pl.nataliana.githubfinder.model.RepositoryCommitsItem
 
 @BindingAdapter("textViewName")
-fun TextView.setTextViewName(item: GithubRepository?) {
-    item?.let {
-        text = item.owner.userLogin
+fun TextView.setTextViewName(userLogin: String?) {
+    userLogin?.let {
+        text = userLogin
     }
 }
 
 @BindingAdapter("textViewRepo")
-fun TextView.setTextViewRepo(item: GithubRepository?) {
-    item?.let {
-        text = item.repoName
+fun TextView.setTextViewRepo(repoName: String?) {
+    repoName?.let {
+        text = repoName
     }
 }
 
 @BindingAdapter("textViewNameDetail")
-fun TextView.setTextViewNameDetail(item: GithubRepository?) {
-    item?.let {
-        text = item.owner.userLogin
+fun TextView.setTextViewNameDetail(userLogin: String?) {
+    userLogin?.let {
+        text = userLogin
     }
 }
 
 @BindingAdapter("textViewRepoDetail")
-fun TextView.setTextViewRepoDetail(item: GithubRepository?) {
-    item?.let {
-        text = item.repoName
+fun TextView.setTextViewRepoDetail(repoName: String?) {
+    repoName?.let {
+        text = repoName
     }
 }
 

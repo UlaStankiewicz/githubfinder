@@ -16,7 +16,6 @@ import pl.nataliana.githubfinder.adapter.RepositoryListener
 import pl.nataliana.githubfinder.databinding.FragmentMainBinding
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModel
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModelFactory
-import timber.log.Timber
 
 class MainFragment : Fragment() {
 
@@ -66,7 +65,6 @@ class MainFragment : Fragment() {
             MainFragmentDirections
                 .actionMainFragmentToDetailFragment(userLogin, repoName)
         )
-        Timber.i("Searched for repo: $userLogin $repoName")
         repoViewModel.onRepoDetailNavigated()
     }
 

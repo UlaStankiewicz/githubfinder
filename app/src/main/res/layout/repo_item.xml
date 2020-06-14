@@ -48,7 +48,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/default_text_size"
                 android:textStyle="bold"
-                app:textViewName="@{githubRepository}"
+                app:textViewName="@{githubRepository.owner.userLogin}"
                 tools:text="natansalda" />
 
             <TextView
@@ -77,7 +77,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/default_text_size"
                 android:textStyle="bold"
-                app:textViewRepo="@{githubRepository}"
+                app:textViewRepo="@{githubRepository.repoName}"
                 tools:text="mywine" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -76,8 +76,6 @@ class DetailFragment : Fragment() {
     }
 
     private fun loadRepository(userLogin: String, repoName: String) {
-        Timber.i("Before coroutine launch")
-
         totalCount.postValue(0)
 
         uiScope.launch {

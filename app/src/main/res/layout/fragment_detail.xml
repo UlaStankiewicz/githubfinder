@@ -50,7 +50,7 @@
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/default_text_size"
                     android:textStyle="bold"
-                    app:textViewNameDetail="@{githubRepository}"
+                    app:textViewNameDetail="@{githubRepository.owner.userLogin}"
                     tools:text="natansalda" />
 
 
@@ -80,7 +80,7 @@
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/default_text_size"
                     android:textStyle="bold"
-                    app:textViewRepoDetail="@{githubRepository}"
+                    app:textViewRepoDetail="@{githubRepository.repoName}"
                     tools:text="mywine" />
 
             </LinearLayout>
