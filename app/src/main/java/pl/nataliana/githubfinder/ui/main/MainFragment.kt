@@ -49,7 +49,7 @@ class MainFragment : Fragment() {
             val searchedUser = userInputAfterSplit.first()
             val searchedRepo = userInputAfterSplit.last()
 
-            if (userInput.contains("/")) {
+            if (userInput.contains(SLASH)) {
                 setSearchButton(searchedUser, searchedRepo)
             } else {
                 Toast.makeText(
@@ -93,5 +93,9 @@ class MainFragment : Fragment() {
                 .actionMainFragmentToDetailFragment(name, repo)
         )
         repoViewModel.onRepoDetailNavigated()
+    }
+
+    companion object {
+        const val SLASH = "/"
     }
 }
