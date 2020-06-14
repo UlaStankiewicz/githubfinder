@@ -15,8 +15,10 @@ import pl.nataliana.githubfinder.R
 import pl.nataliana.githubfinder.adapter.GithubRepositoryAdapter
 import pl.nataliana.githubfinder.adapter.RepositoryListener
 import pl.nataliana.githubfinder.databinding.FragmentMainBinding
+import pl.nataliana.githubfinder.gone
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModel
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModelFactory
+import pl.nataliana.githubfinder.visible
 
 class MainFragment : Fragment() {
 
@@ -82,8 +84,8 @@ class MainFragment : Fragment() {
 
     private fun checkIfRecyclerViewIsEmpty() {
         if (mainAdapter.itemCount != 0) {
-            empty_view_layout.visibility = View.GONE
-            previously_searched_text_view.visibility = View.VISIBLE
+            empty_view_layout.gone()
+            previously_searched_text_view.visible()
         }
     }
 
