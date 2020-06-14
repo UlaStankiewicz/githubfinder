@@ -28,6 +28,7 @@ import pl.nataliana.githubfinder.service.base.Status
 import pl.nataliana.githubfinder.ui.main.MainFragmentDirections
 import timber.log.Timber
 
+
 class DetailFragment : Fragment() {
 
     private val uiScope = CoroutineScope(Dispatchers.Main)
@@ -123,7 +124,8 @@ class DetailFragment : Fragment() {
 
     private fun getRepositoryCommitDetails() {
         repositoryDetailViewModel.viewModelScope.launch {
-            val response = githubFinderApiClient.getCommitsInRepository(
+
+        val response = githubFinderApiClient.getCommitsInRepository(
                 userLogin, repoName, "desc"
             )
             Timber.i("Response: $response")
