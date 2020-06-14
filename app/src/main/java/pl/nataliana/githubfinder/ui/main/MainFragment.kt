@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -43,10 +44,20 @@ class MainFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.repositoryListViewModel = repositoryListViewModel
         binding.searchForRepo.setOnClickListener {
-            val userInput = binding.userInputRepo.text.toString().split("/").toTypedArray()
-            val searchedUser = userInput.first()
-            val searchedRepo = userInput.last()
-            setSearchButton(searchedUser, searchedRepo)
+            val userInput = binding.userInputRepo.text.toString()
+            val userInputAfterSplit = userInput.split("/").toTypedArray()
+            val searchedUser = userInputAfterSplit.first()
+            val searchedRepo = userInputAfterSplit.last()
+
+            if (userInput.contains("/")) {
+                setSearchButton(searchedUser, searchedRepo)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.toast_no_slash_in_search),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
 
         mainAdapter = GithubRepositoryAdapter(RepositoryListener { userLogin, repoName ->
@@ -61,6 +72,7 @@ class MainFragment : Fragment() {
     }
 
     private fun setSearchButton(userLogin: String, repoName: String) {
+
         view?.findNavController()?.navigate(
             MainFragmentDirections
                 .actionMainFragmentToDetailFragment(userLogin, repoName)

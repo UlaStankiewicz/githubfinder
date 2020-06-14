@@ -12,10 +12,11 @@
     <string name="example_sha">np3421331321321323</string>
     <string name="example_author">Natalia Nazaruk</string>
     <string name="search_repositories">Search repositories</string>
-    <string name="no_repositories_yet">No repositories yet</string>
+    <string name="no_repositories_yet">No searched repositories yet</string>
     <string name="owner_repository">owner/repository</string>
     <string name="search_for_repositories">Search for repositories</string>
     <string name="search">Search</string>
     <string name="slash_symbol">/</string>
     <string name="no_such_repository">Ups, there is no such repository</string>
+    <string name="toast_no_slash_in_search">You need to enter repository name in format user/repo</string>
 </resources>
