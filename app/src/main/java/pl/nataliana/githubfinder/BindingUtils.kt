@@ -13,7 +13,7 @@ fun TextView.setTextViewName(item: GithubRepository?) {
 }
 
 @BindingAdapter("textViewRepo")
-fun TextView.setTextWineYear(item: GithubRepository?) {
+fun TextView.setTextViewRepo(item: GithubRepository?) {
     item?.let {
         text = item.repoName
     }
@@ -27,7 +27,7 @@ fun TextView.setTextViewNameDetail(item: GithubRepository?) {
 }
 
 @BindingAdapter("textViewRepoDetail")
-fun TextView.setTextWineYearDetail(item: GithubRepository?) {
+fun TextView.setTextViewRepoDetail(item: GithubRepository?) {
     item?.let {
         text = item.repoName
     }

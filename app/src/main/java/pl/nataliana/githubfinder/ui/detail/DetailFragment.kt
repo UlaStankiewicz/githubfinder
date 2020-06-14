@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
@@ -69,7 +70,7 @@ class DetailFragment : Fragment() {
         activity?.title = getString(R.string.repo_detail_fragment_title)
 
         loadRepository(userLogin, repoName)
-        getRepositoryCommitDetails(userLogin, repoName)
+        getRepositoryCommitDetails()
 
         return binding.root
     }
@@ -77,13 +78,10 @@ class DetailFragment : Fragment() {
     private fun loadRepository(userLogin: String, repoName: String) {
         Timber.i("Before coroutine launch")
 
-        loadStateLiveData.postValue(Status.LOADING)
         totalCount.postValue(0)
 
         uiScope.launch {
             loadStateLiveData.postValue(Status.LOADING)
-
-            Timber.i("Before: Repo details: $userLogin $repoName")
 
             val response = githubFinderApiClient.getRepository(userLogin, repoName)
             Timber.i("Response: $response")
@@ -101,27 +99,35 @@ class DetailFragment : Fragment() {
                     response.data?.let {
                         Timber.i("SUCCESS: Repo details: $userLogin $repoName")
                         loadStateLiveData.postValue(Status.SUCCESS)
+                        repositoryDetailViewModel.githubRepository.observe(
+                            viewLifecycleOwner,
+                            Observer { response ->
+                                detailAdapter.updateGithubRepository(response)
+                            })
                     }
                 }
             }
         }
     }
 
-    private fun getRepositoryCommitDetails(userLogin: String, repoName: String) {
-        Timber.i("Bylem przed launch")
+    private fun getRepositoryCommitDetails() {
         repositoryDetailViewModel.viewModelScope.launch {
             val response = githubFinderApiClient.getCommitsInRepository(userLogin, repoName)
-            Timber.i("Bylem przed if")
+            Timber.i("Response: $response")
 
             response.data?.let {
                 when (response.status) {
                     Status.SUCCESS -> {
-                        repositoryDetailViewModel.repositoryCommits.set(response.data)
-                        totalCount.postValue(it.totalCount)
-                        Timber.i("SUCCESS: Repo commits: $response")
+                        repositoryDetailViewModel.repositoryCommits.observe(
+                            viewLifecycleOwner,
+                            Observer { response ->
+                                it.items.let {
+                                    detailAdapter.updateList(response.items)
+                                }
+                            })
                     }
                     else -> {
-                        repositoryDetailViewModel.repositoryCommits.set(null)
+                        Timber.i("ERROR: Couldn't find repository commits: $response")
                     }
                 }
             }

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.nataliana.githubfinder.databinding.RepoDetailItemBinding
+import pl.nataliana.githubfinder.model.GithubRepository
 import pl.nataliana.githubfinder.model.RepositoryCommits
 import pl.nataliana.githubfinder.model.RepositoryCommitsItem
 
@@ -14,12 +15,25 @@ class GithubRepositoryDetailAdapter() :
         RepositoryCommitsDiffCallback()
     ) {
 
+    private var mList: List<RepositoryCommits>? = null
+    private var mRepository: GithubRepository? = null
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
+    }
+
+    fun updateGithubRepository(repository: GithubRepository?) {
+        mRepository = repository
+        notifyDataSetChanged()
+    }
+
+    fun updateList(list: List<RepositoryCommits>?) {
+        mList = list
+        notifyDataSetChanged()
     }
 
     class ViewHolder private constructor(private val binding: RepoDetailItemBinding) :
