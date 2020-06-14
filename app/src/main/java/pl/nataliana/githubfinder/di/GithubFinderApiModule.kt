@@ -3,7 +3,6 @@ package pl.nataliana.githubfinder.di
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -44,7 +43,7 @@ fun setupRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
 
 fun setupGson(): Gson {
     return GsonBuilder()
-        .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
         .setLenient()
         .create()
 }
@@ -61,7 +60,6 @@ fun setupHttpLoggingInterceptor(): HttpLoggingInterceptor {
 }
 
 fun setupOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
-
     val builder = OkHttpClient.Builder()
 
     builder
@@ -70,10 +68,6 @@ fun setupOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpCli
         .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
         .addInterceptor { chain ->
             val requestBuilder = chain.request().newBuilder()
-            requestBuilder.addHeader(
-                "Authorization",
-                Credentials.basic("saeiddrv", "b29272629e9a6f98eac243c8cc6f4bc787a52ff2")
-            )
             chain.proceed(requestBuilder.build())
         }
     if (BuildConfig.DEBUG) {
