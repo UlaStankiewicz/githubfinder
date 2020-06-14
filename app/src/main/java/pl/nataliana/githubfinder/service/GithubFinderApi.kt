@@ -5,6 +5,7 @@ import pl.nataliana.githubfinder.model.GithubRepository
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface GithubFinderApi {
 
@@ -18,6 +19,7 @@ interface GithubFinderApi {
     @GET("repos/{user}/{repo}/commits")
     suspend fun getCommitsInRepository(
         @Path("user") user: String,
-        @Path("repo") repo: String
+        @Path("repo") repo: String,
+        @Query("sort") sort: String
     ): Response<GetRepositoryCommitResponse>
 }

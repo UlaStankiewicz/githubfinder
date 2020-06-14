@@ -29,11 +29,12 @@ class GithubFinderApiClientImpl(private val githubFinderApi: GithubFinderApi) :
 
     override suspend fun getCommitsInRepository(
         user: String,
-        repo: String
+        repo: String,
+        sort: String
     ): Resource<GetRepositoryCommitResponse> = withContext(Dispatchers.IO) {
         try {
             val response: Response<GetRepositoryCommitResponse> =
-                githubFinderApi.getCommitsInRepository(user, repo)
+                githubFinderApi.getCommitsInRepository(user, repo, sort)
             if (response.isSuccessful) {
                 Resource.success(response.body())
 

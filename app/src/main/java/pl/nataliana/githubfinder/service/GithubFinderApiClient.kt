@@ -8,6 +8,6 @@ interface GithubFinderApiClient {
 
     suspend fun getRepository(user: String, repo: String): Resource<GithubRepository>
 
-    suspend fun getCommitsInRepository(user: String, repo: String): Resource<GetRepositoryCommitResponse>
+    suspend fun getCommitsInRepository(user: String, repo: String, sort: String): Resource<GetRepositoryCommitResponse>
 
 }

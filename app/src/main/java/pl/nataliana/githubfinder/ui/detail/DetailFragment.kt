@@ -32,6 +32,7 @@ class DetailFragment : Fragment() {
     private lateinit var repositoryDetailViewModel: RepositoryDetailViewModel
     private lateinit var detailAdapter: GithubRepositoryDetailAdapter
     private val githubFinderApiClient: GithubFinderApiClient by inject()
+    private lateinit var binding: FragmentDetailBinding
     private var userLogin: String = ""
     private var repoName: String = ""
 
@@ -41,10 +42,9 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding: FragmentDetailBinding =
-            DataBindingUtil.inflate(
-                inflater, R.layout.fragment_detail, container, false
-            )
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_detail, container, false
+        )
 
         val arguments = DetailFragmentArgs.fromBundle(requireArguments())
         userLogin = arguments.userLogin
@@ -69,13 +69,13 @@ class DetailFragment : Fragment() {
 
         activity?.title = getString(R.string.repo_detail_fragment_title)
 
-        loadRepository(userLogin, repoName)
+        loadRepository()
         getRepositoryCommitDetails()
 
         return binding.root
     }
 
-    private fun loadRepository(userLogin: String, repoName: String) {
+    private fun loadRepository() {
         totalCount.postValue(0)
 
         uiScope.launch {
@@ -110,7 +110,9 @@ class DetailFragment : Fragment() {
 
     private fun getRepositoryCommitDetails() {
         repositoryDetailViewModel.viewModelScope.launch {
-            val response = githubFinderApiClient.getCommitsInRepository(userLogin, repoName)
+            val response = githubFinderApiClient.getCommitsInRepository(
+                userLogin, repoName, "desc"
+            )
             Timber.i("Response: $response")
 
             response.data?.let {
