@@ -17,4 +17,5 @@
     <string name="search_for_repositories">Search for repositories</string>
     <string name="search">Search</string>
     <string name="slash_symbol">/</string>
+    <string name="no_such_repository">Ups, there is no such repository</string>
 </resources>

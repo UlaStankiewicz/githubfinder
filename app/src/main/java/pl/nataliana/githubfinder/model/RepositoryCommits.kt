@@ -2,8 +2,6 @@ package pl.nataliana.githubfinder.model
 
 import com.google.gson.annotations.SerializedName
 
-class RepositoryCommits : ArrayList<RepositoryCommitsItem>()
-
 data class RepositoryCommitsItem (
     @SerializedName("commit")
     val commit: Commit

@@ -18,7 +18,6 @@ class GithubFinderApiClientImpl(private val githubFinderApi: GithubFinderApi) :
             val response: Response<GithubRepository> = githubFinderApi.getRepository(user, repo)
             if (response.isSuccessful) {
                 Resource.success(response.body())
-
             } else {
                 Resource.error(response.message())
             }
@@ -37,7 +36,6 @@ class GithubFinderApiClientImpl(private val githubFinderApi: GithubFinderApi) :
                 githubFinderApi.getCommitsInRepository(user, repo, sort)
             if (response.isSuccessful) {
                 Resource.success(response.body())
-
             } else {
                 Resource.error(response.message())
             }

@@ -7,31 +7,35 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.findNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import pl.nataliana.githubfinder.R
+import pl.nataliana.githubfinder.adapter.GithubRepositoryAdapter
 import pl.nataliana.githubfinder.adapter.GithubRepositoryDetailAdapter
+import pl.nataliana.githubfinder.adapter.RepositoryListener
 import pl.nataliana.githubfinder.databinding.FragmentDetailBinding
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModel
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModelFactory
+import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModel
 import pl.nataliana.githubfinder.service.GithubFinderApiClient
 import pl.nataliana.githubfinder.service.base.Status
+import pl.nataliana.githubfinder.ui.main.MainFragmentDirections
 import timber.log.Timber
 
 class DetailFragment : Fragment() {
 
     private val uiScope = CoroutineScope(Dispatchers.Main)
-    private val loadStateLiveData: MutableLiveData<Status> = MutableLiveData()
-    private val totalCount: MutableLiveData<Long> = MutableLiveData()
     private lateinit var repositoryDetailViewModel: RepositoryDetailViewModel
     private lateinit var detailAdapter: GithubRepositoryDetailAdapter
+    private lateinit var githubRepositoryAdapter: GithubRepositoryAdapter
     private val githubFinderApiClient: GithubFinderApiClient by inject()
+    private val repoViewModel: RepositoryListViewModel by inject()
     private lateinit var binding: FragmentDetailBinding
     private var userLogin: String = ""
     private var repoName: String = ""
@@ -65,6 +69,10 @@ class DetailFragment : Fragment() {
         binding.lifecycleOwner = this
 
         detailAdapter = GithubRepositoryDetailAdapter()
+        githubRepositoryAdapter =
+            GithubRepositoryAdapter(RepositoryListener { userLogin, repoName ->
+                setClick(userLogin, repoName)
+            })
         binding.detailRecyclerView.adapter = detailAdapter
 
         activity?.title = getString(R.string.repo_detail_fragment_title)
@@ -76,10 +84,8 @@ class DetailFragment : Fragment() {
     }
 
     private fun loadRepository() {
-        totalCount.postValue(0)
 
         uiScope.launch {
-            loadStateLiveData.postValue(Status.LOADING)
 
             val response = githubFinderApiClient.getRepository(userLogin, repoName)
             Timber.i("Response: $response")
@@ -87,25 +93,32 @@ class DetailFragment : Fragment() {
             when (response.status) {
                 Status.ERROR -> {
                     Timber.i("ERROR: Repo details: $userLogin $repoName")
-                    loadStateLiveData.postValue(Status.ERROR)
+                    setNoSuchRepoText()
                 }
                 Status.EMPTY -> {
                     Timber.i("EMPTY: Repo details: $userLogin $repoName")
-                    loadStateLiveData.postValue(Status.EMPTY)
+                    setNoSuchRepoText()
                 }
                 else -> {
                     response.data?.let {
                         Timber.i("SUCCESS: Repo details: $userLogin $repoName")
-                        loadStateLiveData.postValue(Status.SUCCESS)
                         repositoryDetailViewModel.githubRepository.observe(
                             viewLifecycleOwner,
                             Observer { response ->
-                                detailAdapter.updateGithubRepository(response)
+                                githubRepositoryAdapter.updateGithubRepository(response)
                             })
+                        binding.textViewNameDetail.text = response.data.owner.userLogin
+                        binding.textViewRepoDetail.text = response.data.repoName
                     }
                 }
             }
         }
+    }
+
+    private fun setNoSuchRepoText() {
+        binding.textViewNameDetail.text = getString(R.string.no_such_repository)
+        binding.textViewRepoDetail.text = ""
+        binding.textViewSlash.text = ""
     }
 
     private fun getRepositoryCommitDetails() {
@@ -132,5 +145,13 @@ class DetailFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setClick(name: String, repo: String) {
+        view?.findNavController()?.navigate(
+            MainFragmentDirections
+                .actionMainFragmentToDetailFragment(name, repo)
+        )
+        repoViewModel.onRepoDetailNavigated()
     }
 }
