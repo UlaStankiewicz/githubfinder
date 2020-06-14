@@ -11,7 +11,7 @@
 
         <variable
             name="repositoryDetailViewModel"
-            type="pl.nataliana.githubfinder.model.RepositoryDetailViewModel" />
+            type="pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView

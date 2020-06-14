@@ -17,8 +17,8 @@ import org.koin.android.ext.android.inject
 import pl.nataliana.githubfinder.R
 import pl.nataliana.githubfinder.adapter.GithubRepositoryDetailAdapter
 import pl.nataliana.githubfinder.databinding.FragmentDetailBinding
-import pl.nataliana.githubfinder.model.RepositoryDetailViewModel
-import pl.nataliana.githubfinder.model.RepositoryDetailViewModelFactory
+import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModel
+import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModelFactory
 import pl.nataliana.githubfinder.service.GithubFinderApiClient
 import pl.nataliana.githubfinder.service.base.Status
 import timber.log.Timber
@@ -27,6 +27,7 @@ class DetailFragment : Fragment() {
 
     private val uiScope = CoroutineScope(Dispatchers.Main)
     private val loadStateLiveData: MutableLiveData<Status> = MutableLiveData()
+    private val totalCount: MutableLiveData<Long> = MutableLiveData()
     private lateinit var repositoryDetailViewModel: RepositoryDetailViewModel
     private lateinit var detailAdapter: GithubRepositoryDetailAdapter
     private val githubFinderApiClient: GithubFinderApiClient by inject()
@@ -48,7 +49,11 @@ class DetailFragment : Fragment() {
         userLogin = arguments.userLogin
         repoName = arguments.repoName
 
-        val viewModelFactory = RepositoryDetailViewModelFactory(userLogin, repoName)
+        val viewModelFactory =
+            RepositoryDetailViewModelFactory(
+                userLogin,
+                repoName
+            )
 
         repositoryDetailViewModel =
             ViewModelProvider(
@@ -71,6 +76,10 @@ class DetailFragment : Fragment() {
 
     private fun loadRepository(userLogin: String, repoName: String) {
         Timber.i("Before coroutine launch")
+
+        loadStateLiveData.postValue(Status.LOADING)
+        totalCount.postValue(0)
+
         uiScope.launch {
             loadStateLiveData.postValue(Status.LOADING)
 
@@ -99,13 +108,22 @@ class DetailFragment : Fragment() {
     }
 
     private fun getRepositoryCommitDetails(userLogin: String, repoName: String) {
+        Timber.i("Bylem przed launch")
         repositoryDetailViewModel.viewModelScope.launch {
-            val result = githubFinderApiClient.getCommitsInRepository(userLogin, repoName)
-            if (result.status == Status.SUCCESS) {
-                repositoryDetailViewModel.repositoryCommits.set(result.data)
+            val response = githubFinderApiClient.getCommitsInRepository(userLogin, repoName)
+            Timber.i("Bylem przed if")
 
-            } else {
-                repositoryDetailViewModel.repositoryCommits.set(null)
+            response.data?.let {
+                when (response.status) {
+                    Status.SUCCESS -> {
+                        repositoryDetailViewModel.repositoryCommits.set(response.data)
+                        totalCount.postValue(it.totalCount)
+                        Timber.i("SUCCESS: Repo commits: $response")
+                    }
+                    else -> {
+                        repositoryDetailViewModel.repositoryCommits.set(null)
+                    }
+                }
             }
         }
     }

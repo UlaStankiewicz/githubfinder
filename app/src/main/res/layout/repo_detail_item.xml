@@ -6,7 +6,7 @@
 
         <variable
             name="repositoryDetails"
-            type="pl.nataliana.githubfinder.model.RepositoryCommits" />
+            type="pl.nataliana.githubfinder.model.RepositoryCommitsItem" />
     </data>
 
     <LinearLayout

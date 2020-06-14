@@ -14,8 +14,8 @@ import pl.nataliana.githubfinder.R
 import pl.nataliana.githubfinder.adapter.GithubRepositoryAdapter
 import pl.nataliana.githubfinder.adapter.RepositoryListener
 import pl.nataliana.githubfinder.databinding.FragmentMainBinding
-import pl.nataliana.githubfinder.model.RepositoryListViewModel
-import pl.nataliana.githubfinder.model.RepositoryListViewModelFactory
+import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModel
+import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModelFactory
 import timber.log.Timber
 
 class MainFragment : Fragment() {
@@ -31,7 +31,10 @@ class MainFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
 
         val application = requireNotNull(this.activity).application
-        val viewModelFactory = RepositoryListViewModelFactory(application)
+        val viewModelFactory =
+            RepositoryListViewModelFactory(
+                application
+            )
 
         val repositoryListViewModel =
             ViewModelProvider(

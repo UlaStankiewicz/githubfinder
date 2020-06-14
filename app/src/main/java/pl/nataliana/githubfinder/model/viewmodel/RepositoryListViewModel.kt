@@ -1,4 +1,4 @@
-package pl.nataliana.githubfinder.model
+package pl.nataliana.githubfinder.model.viewmodel
 
 import android.app.Application
 import androidx.databinding.ObservableField
@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Job
+import pl.nataliana.githubfinder.model.GithubRepository
 
 class RepositoryListViewModel(
     application: Application

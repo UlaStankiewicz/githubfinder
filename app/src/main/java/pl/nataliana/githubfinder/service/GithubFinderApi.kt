@@ -1,7 +1,7 @@
 package pl.nataliana.githubfinder.service
 
+import pl.nataliana.githubfinder.model.GetRepositoryCommitResponse
 import pl.nataliana.githubfinder.model.GithubRepository
-import pl.nataliana.githubfinder.model.RepositoryCommits
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -19,5 +19,5 @@ interface GithubFinderApi {
     suspend fun getCommitsInRepository(
         @Path("user") user: String,
         @Path("repo") repo: String
-    ): Response<List<RepositoryCommits>>
+    ): Response<GetRepositoryCommitResponse>
 }

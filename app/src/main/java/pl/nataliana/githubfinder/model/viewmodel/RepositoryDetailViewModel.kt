@@ -1,8 +1,9 @@
-package pl.nataliana.githubfinder.model
+package pl.nataliana.githubfinder.model.viewmodel
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Job
+import pl.nataliana.githubfinder.model.GetRepositoryCommitResponse
 
 class RepositoryDetailViewModel(
     private val userLogin: String = "",
@@ -10,7 +11,7 @@ class RepositoryDetailViewModel(
 ) : ViewModel() {
 
     private val viewModelJob = Job()
-    val repositoryCommits: ObservableField<List<RepositoryCommits>> = ObservableField()
+    val repositoryCommits: ObservableField<GetRepositoryCommitResponse> = ObservableField()
 
     override fun onCleared() {
         super.onCleared()

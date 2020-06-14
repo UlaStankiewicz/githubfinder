@@ -7,7 +7,7 @@
 
         <variable
             name="repositoryListViewModel"
-            type="pl.nataliana.githubfinder.model.RepositoryListViewModel" />
+            type="pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModel" />
     </data>
 
     <LinearLayout

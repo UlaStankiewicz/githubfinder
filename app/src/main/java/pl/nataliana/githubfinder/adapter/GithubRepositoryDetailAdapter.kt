@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.nataliana.githubfinder.databinding.RepoDetailItemBinding
 import pl.nataliana.githubfinder.model.RepositoryCommits
+import pl.nataliana.githubfinder.model.RepositoryCommitsItem
 
 class GithubRepositoryDetailAdapter() :
-    ListAdapter<RepositoryCommits, GithubRepositoryDetailAdapter.ViewHolder>(
+    ListAdapter<RepositoryCommitsItem, GithubRepositoryDetailAdapter.ViewHolder>(
         RepositoryCommitsDiffCallback()
     ) {
 
@@ -24,7 +25,7 @@ class GithubRepositoryDetailAdapter() :
     class ViewHolder private constructor(private val binding: RepoDetailItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: RepositoryCommits) {
+        fun bind(item: RepositoryCommitsItem) {
             binding.repositoryDetails = item
             binding.executePendingBindings()
         }
@@ -42,12 +43,12 @@ class GithubRepositoryDetailAdapter() :
 }
 
 class RepositoryCommitsDiffCallback :
-    DiffUtil.ItemCallback<RepositoryCommits>() {
-    override fun areItemsTheSame(oldItem: RepositoryCommits, newItem: RepositoryCommits): Boolean {
+    DiffUtil.ItemCallback<RepositoryCommitsItem>() {
+    override fun areItemsTheSame(oldItem: RepositoryCommitsItem, newItem: RepositoryCommitsItem): Boolean {
         return oldItem.commit == newItem.commit
     }
 
-    override fun areContentsTheSame(oldItem: RepositoryCommits, newItem: RepositoryCommits): Boolean {
+    override fun areContentsTheSame(oldItem: RepositoryCommitsItem, newItem: RepositoryCommitsItem): Boolean {
         return oldItem == newItem
     }
 }

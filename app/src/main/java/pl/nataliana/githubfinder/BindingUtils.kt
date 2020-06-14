@@ -3,7 +3,7 @@ package pl.nataliana.githubfinder
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import pl.nataliana.githubfinder.model.GithubRepository
-import pl.nataliana.githubfinder.model.RepositoryCommits
+import pl.nataliana.githubfinder.model.RepositoryCommitsItem
 
 @BindingAdapter("textViewName")
 fun TextView.setTextViewName(item: GithubRepository?) {
@@ -34,21 +34,21 @@ fun TextView.setTextWineYearDetail(item: GithubRepository?) {
 }
 
 @BindingAdapter("commitMessage")
-fun TextView.setCommitMessage(item: RepositoryCommits?) {
+fun TextView.setCommitMessage(item: RepositoryCommitsItem?) {
     item?.let {
         text = item.commit.message
     }
 }
 
 @BindingAdapter("commitSha")
-fun TextView.setCommitSha(item: RepositoryCommits?) {
+fun TextView.setCommitSha(item: RepositoryCommitsItem?) {
     item?.let {
         text = item.commit.sha
     }
 }
 
 @BindingAdapter("commitAuthor")
-fun TextView.setCommitAuthor(item: RepositoryCommits?) {
+fun TextView.setCommitAuthor(item: RepositoryCommitsItem?) {
     item?.let {
         text = item.commit.author.name
     }
