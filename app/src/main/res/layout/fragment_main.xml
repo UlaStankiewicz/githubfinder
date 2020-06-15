@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/default_margin_medium"
-            android:background="@color/colorPrimaryDark"
+            android:background="@drawable/button_shape"
             android:text="@string/search"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/default_text_size_small" />
