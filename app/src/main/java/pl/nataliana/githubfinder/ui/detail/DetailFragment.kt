@@ -1,18 +1,17 @@
 package pl.nataliana.githubfinder.ui.detail
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,15 +21,16 @@ import pl.nataliana.githubfinder.adapter.GithubRepositoryAdapter
 import pl.nataliana.githubfinder.adapter.GithubRepositoryDetailAdapter
 import pl.nataliana.githubfinder.adapter.RepositoryListener
 import pl.nataliana.githubfinder.databinding.FragmentDetailBinding
+import pl.nataliana.githubfinder.model.GithubRepository
+import pl.nataliana.githubfinder.model.RepositoryCommits
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModel
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModelFactory
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModel
 import pl.nataliana.githubfinder.service.GithubFinderApiClient
+import pl.nataliana.githubfinder.service.base.Resource
 import pl.nataliana.githubfinder.service.base.Status
-import pl.nataliana.githubfinder.toast
 import pl.nataliana.githubfinder.ui.main.MainFragmentDirections
 import timber.log.Timber
-
 
 class DetailFragment : Fragment() {
 
@@ -43,7 +43,8 @@ class DetailFragment : Fragment() {
     private lateinit var binding: FragmentDetailBinding
     private var userLogin: String = ""
     private var repoName: String = ""
-    val gson = Gson()
+    private lateinit var repositoryResponse: Resource<GithubRepository>
+    private lateinit var commitsResponse: Resource<RepositoryCommits>
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -72,9 +73,6 @@ class DetailFragment : Fragment() {
 
         binding.repositoryDetailViewModel = repositoryDetailViewModel
         binding.lifecycleOwner = this
-        binding.shareRepo.setOnClickListener {
-            shareRepositoryCommits()
-        }
 
         detailAdapter = GithubRepositoryDetailAdapter()
         // TODO change this logic, as this is not needed here
@@ -89,11 +87,22 @@ class DetailFragment : Fragment() {
         loadRepository()
         getRepositoryCommitDetails()
 
+        binding.shareRepo.setOnClickListener {
+            shareRepositoryCommits()
+        }
+
         return binding.root
     }
 
     private fun shareRepositoryCommits() {
-        requireActivity().toast("Button clicked")
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "$repositoryResponse $commitsResponse")
+            type = "text/json"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
     }
 
     private fun loadRepository() {
@@ -122,22 +131,17 @@ class DetailFragment : Fragment() {
                             })
                         binding.textViewNameDetail.text = response.data.owner.userLogin
                         binding.textViewRepoDetail.text = response.data.repoName
+                        repositoryResponse = response
                     }
                 }
             }
         }
     }
 
-    private fun setNoSuchRepoText() {
-        binding.textViewNameDetail.text = getString(R.string.no_such_repository)
-        binding.textViewRepoDetail.text = ""
-        binding.textViewSlash.text = ""
-    }
-
     private fun getRepositoryCommitDetails() {
         repositoryDetailViewModel.viewModelScope.launch {
 
-        val response = githubFinderApiClient.getCommitsInRepository(
+            val response = githubFinderApiClient.getCommitsInRepository(
                 userLogin, repoName, "desc"
             )
             Timber.i("Response: $response")
@@ -148,11 +152,9 @@ class DetailFragment : Fragment() {
                         repositoryDetailViewModel.repositoryCommits.observe(
                             viewLifecycleOwner,
                             Observer { response ->
-                                it.let {
-                                    detailAdapter.updateList(response)
-                                }
                                 detailAdapter.updateList(response)
                             })
+                        commitsResponse = response
                     }
                     else -> {
                         Timber.i("ERROR: Couldn't find repository commits: $response")
@@ -160,6 +162,15 @@ class DetailFragment : Fragment() {
                 }
             }
         }
+        binding.shareRepo.setOnClickListener {
+            shareRepositoryCommits()
+        }
+    }
+
+    private fun setNoSuchRepoText() {
+        binding.textViewNameDetail.text = getString(R.string.no_such_repository)
+        binding.textViewRepoDetail.text = ""
+        binding.textViewSlash.text = ""
     }
 
     private fun setClick(name: String, repo: String) {
