@@ -94,7 +94,8 @@
                 android:background="@drawable/button_shape"
                 android:text="@string/share_this_repository"
                 android:textColor="@color/colorAccent"
-                android:textSize="@dimen/default_text_size_small" />
+                android:textSize="@dimen/default_text_size_small"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detail_recycler_view"

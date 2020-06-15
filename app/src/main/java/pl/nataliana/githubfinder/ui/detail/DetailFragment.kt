@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +20,7 @@ import pl.nataliana.githubfinder.adapter.GithubRepositoryAdapter
 import pl.nataliana.githubfinder.adapter.GithubRepositoryDetailAdapter
 import pl.nataliana.githubfinder.adapter.RepositoryListener
 import pl.nataliana.githubfinder.databinding.FragmentDetailBinding
+import pl.nataliana.githubfinder.gone
 import pl.nataliana.githubfinder.model.GithubRepository
 import pl.nataliana.githubfinder.model.RepositoryCommits
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModel
@@ -30,6 +30,7 @@ import pl.nataliana.githubfinder.service.GithubFinderApiClient
 import pl.nataliana.githubfinder.service.base.Resource
 import pl.nataliana.githubfinder.service.base.Status
 import pl.nataliana.githubfinder.ui.main.MainFragmentDirections
+import pl.nataliana.githubfinder.visible
 import timber.log.Timber
 
 class DetailFragment : Fragment() {
@@ -108,9 +109,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun loadRepository() {
-
         uiScope.launch {
-
             val response = githubFinderApiClient.getRepository(userLogin, repoName)
             Timber.i("Response: $response")
 
@@ -134,6 +133,8 @@ class DetailFragment : Fragment() {
                         binding.textViewNameDetail.text = response.data.owner.userLogin
                         binding.textViewRepoDetail.text = response.data.repoName
                         repositoryResponse = response
+                        getRepositoryCommitDetails()
+                        binding.shareRepo.visible()
                     }
                 }
             }
@@ -141,7 +142,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun getRepositoryCommitDetails() {
-        repositoryDetailViewModel.viewModelScope.launch {
+        uiScope.launch {
 
             val response = githubFinderApiClient.getCommitsInRepository(
                 userLogin, repoName, "desc"
@@ -172,8 +173,8 @@ class DetailFragment : Fragment() {
 
     private fun setNoSuchRepoText() {
         binding.textViewNameDetail.text = getString(R.string.no_such_repository)
-        binding.textViewRepoDetail.text = ""
-        binding.textViewSlash.text = ""
+        binding.textViewRepoDetail.gone()
+        binding.textViewSlash.gone()
     }
 
     private fun setClick(name: String, repo: String) {
