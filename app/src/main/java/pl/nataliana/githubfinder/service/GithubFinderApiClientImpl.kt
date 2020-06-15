@@ -2,8 +2,8 @@ package pl.nataliana.githubfinder.service
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import pl.nataliana.githubfinder.model.GetRepositoryCommitResponse
 import pl.nataliana.githubfinder.model.GithubRepository
+import pl.nataliana.githubfinder.model.RepositoryCommits
 import pl.nataliana.githubfinder.service.base.Resource
 import retrofit2.Response
 
@@ -30,9 +30,9 @@ class GithubFinderApiClientImpl(private val githubFinderApi: GithubFinderApi) :
         user: String,
         repo: String,
         sort: String
-    ): Resource<GetRepositoryCommitResponse> = withContext(Dispatchers.IO) {
+    ): Resource<RepositoryCommits> = withContext(Dispatchers.IO) {
         try {
-            val response: Response<GetRepositoryCommitResponse> =
+            val response: Response<RepositoryCommits> =
                 githubFinderApi.getCommitsInRepository(user, repo, sort)
             if (response.isSuccessful) {
                 Resource.success(response.body())
@@ -40,7 +40,7 @@ class GithubFinderApiClientImpl(private val githubFinderApi: GithubFinderApi) :
                 Resource.error(response.message())
             }
         } catch (ex: Throwable) {
-            Resource.error<GetRepositoryCommitResponse>("${ex.message}")
+            Resource.error<RepositoryCommits>("${ex.message}")
         }
     }
 }

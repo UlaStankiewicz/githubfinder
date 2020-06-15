@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Job
-import pl.nataliana.githubfinder.model.GetRepositoryCommitResponse
 import pl.nataliana.githubfinder.model.GithubRepository
+import pl.nataliana.githubfinder.model.RepositoryCommits
 
 class RepositoryDetailViewModel(
     private val userLogin: String = "",
@@ -14,8 +14,8 @@ class RepositoryDetailViewModel(
 
     private val viewModelJob = Job()
 
-    private val _repositoryCommits = MutableLiveData<GetRepositoryCommitResponse>()
-    val repositoryCommits: LiveData<GetRepositoryCommitResponse>
+    private val _repositoryCommits = MutableLiveData<RepositoryCommits>()
+    val repositoryCommits: LiveData<RepositoryCommits>
         get() = _repositoryCommits
 
     private val _githubRepository = MutableLiveData<GithubRepository>()

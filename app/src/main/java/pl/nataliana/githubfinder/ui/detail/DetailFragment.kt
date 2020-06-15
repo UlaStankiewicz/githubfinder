@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ import pl.nataliana.githubfinder.adapter.GithubRepositoryAdapter
 import pl.nataliana.githubfinder.adapter.GithubRepositoryDetailAdapter
 import pl.nataliana.githubfinder.adapter.RepositoryListener
 import pl.nataliana.githubfinder.databinding.FragmentDetailBinding
+import pl.nataliana.githubfinder.model.RepositoryCommitsItem
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModel
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModelFactory
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModel
@@ -40,6 +42,7 @@ class DetailFragment : Fragment() {
     private lateinit var binding: FragmentDetailBinding
     private var userLogin: String = ""
     private var repoName: String = ""
+    val gson = Gson()
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -136,9 +139,12 @@ class DetailFragment : Fragment() {
                         repositoryDetailViewModel.repositoryCommits.observe(
                             viewLifecycleOwner,
                             Observer { response ->
-                                it.items.let {
-                                    detailAdapter.updateList(response.items)
+                                it[1].let {
+                                    detailAdapter.updateList(response)
                                 }
+//                                val commitsList: List<RepositoryCommitsItem> = gson.fromJson(response, RepositoryCommitsItem::class.java)
+//                                detailAdapter.updateList(commitsList)
+                                detailAdapter.updateList(response)
                             })
                     }
                     else -> {

@@ -2,6 +2,7 @@ package pl.nataliana.githubfinder
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import pl.nataliana.githubfinder.model.RepositoryCommits
 import pl.nataliana.githubfinder.model.RepositoryCommitsItem
 
 @BindingAdapter("textViewName")

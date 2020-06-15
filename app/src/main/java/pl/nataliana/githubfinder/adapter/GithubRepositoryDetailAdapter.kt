@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.nataliana.githubfinder.databinding.RepoDetailItemBinding
+import pl.nataliana.githubfinder.model.RepositoryCommits
 import pl.nataliana.githubfinder.model.RepositoryCommitsItem
 
 class GithubRepositoryDetailAdapter :
