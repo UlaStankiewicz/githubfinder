@@ -97,7 +97,9 @@ class DetailFragment : Fragment() {
     private fun shareRepositoryCommits() {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "$repositoryResponse $commitsResponse")
+            val repositoryData =
+                "Owner: ${repositoryResponse.data?.owner?.userLogin}, repository: ${repositoryResponse.data?.repoName}"
+            putExtra(Intent.EXTRA_TEXT, "$repositoryData \n\n $commitsResponse")
             type = "text/json"
         }
 
@@ -154,6 +156,7 @@ class DetailFragment : Fragment() {
                             Observer { response ->
                                 detailAdapter.updateList(response)
                             })
+                        binding.detailRecyclerView.adapter = detailAdapter
                         commitsResponse = response
                     }
                     else -> {
