@@ -6,16 +6,16 @@ class RepositoryCommits : ArrayList<RepositoryCommitsItem>()
 
 data class RepositoryCommitsItem (
     @SerializedName("commit")
-    val commit: Commit
+    val commit: Commit,
+    @SerializedName("sha")
+    val sha: String
 )
 
 data class Commit(
     @SerializedName("author")
     val author: Author,
     @SerializedName("message")
-    val message: String,
-    @SerializedName("sha")
-    val sha: String
+    val message: String
 )
 
 data class Author(

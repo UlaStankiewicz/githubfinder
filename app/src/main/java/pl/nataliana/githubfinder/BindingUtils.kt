@@ -43,7 +43,7 @@ fun TextView.setCommitMessage(item: RepositoryCommitsItem?) {
 @BindingAdapter("commitSha")
 fun TextView.setCommitSha(item: RepositoryCommitsItem?) {
     item?.let {
-        text = item.commit.sha
+        text = item.sha
     }
 }
 

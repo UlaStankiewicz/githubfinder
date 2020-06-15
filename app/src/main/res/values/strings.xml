@@ -19,4 +19,5 @@
     <string name="slash_symbol">/</string>
     <string name="no_such_repository">Ups, there is no such repository</string>
     <string name="toast_no_slash_in_search">You need to enter repository name in format user/repo</string>
+    <string name="share_this_repository">Share</string>
 </resources>

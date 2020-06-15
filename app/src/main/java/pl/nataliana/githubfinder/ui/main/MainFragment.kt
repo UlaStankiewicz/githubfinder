@@ -46,7 +46,7 @@ class MainFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.repositoryListViewModel = repositoryListViewModel
         binding.searchForRepo.setOnClickListener {
-            val userInput = binding.userInputRepo.text.toString()
+            val userInput = binding.userInputRepo.text.toString().trim()
             val userInputAfterSplit = userInput.split("/").toTypedArray()
             val searchedUser = userInputAfterSplit.first()
             val searchedRepo = userInputAfterSplit.last()

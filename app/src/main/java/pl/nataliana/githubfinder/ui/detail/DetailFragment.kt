@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,12 +22,12 @@ import pl.nataliana.githubfinder.adapter.GithubRepositoryAdapter
 import pl.nataliana.githubfinder.adapter.GithubRepositoryDetailAdapter
 import pl.nataliana.githubfinder.adapter.RepositoryListener
 import pl.nataliana.githubfinder.databinding.FragmentDetailBinding
-import pl.nataliana.githubfinder.model.RepositoryCommitsItem
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModel
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModelFactory
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModel
 import pl.nataliana.githubfinder.service.GithubFinderApiClient
 import pl.nataliana.githubfinder.service.base.Status
+import pl.nataliana.githubfinder.toast
 import pl.nataliana.githubfinder.ui.main.MainFragmentDirections
 import timber.log.Timber
 
@@ -71,8 +72,12 @@ class DetailFragment : Fragment() {
 
         binding.repositoryDetailViewModel = repositoryDetailViewModel
         binding.lifecycleOwner = this
+        binding.shareRepo.setOnClickListener {
+            shareRepositoryCommits()
+        }
 
         detailAdapter = GithubRepositoryDetailAdapter()
+        // TODO change this logic, as this is not needed here
         githubRepositoryAdapter =
             GithubRepositoryAdapter(RepositoryListener { userLogin, repoName ->
                 setClick(userLogin, repoName)
@@ -85,6 +90,10 @@ class DetailFragment : Fragment() {
         getRepositoryCommitDetails()
 
         return binding.root
+    }
+
+    private fun shareRepositoryCommits() {
+        requireActivity().toast("Button clicked")
     }
 
     private fun loadRepository() {
@@ -139,11 +148,9 @@ class DetailFragment : Fragment() {
                         repositoryDetailViewModel.repositoryCommits.observe(
                             viewLifecycleOwner,
                             Observer { response ->
-                                it[1].let {
+                                it.let {
                                     detailAdapter.updateList(response)
                                 }
-//                                val commitsList: List<RepositoryCommitsItem> = gson.fromJson(response, RepositoryCommitsItem::class.java)
-//                                detailAdapter.updateList(commitsList)
                                 detailAdapter.updateList(response)
                             })
                     }

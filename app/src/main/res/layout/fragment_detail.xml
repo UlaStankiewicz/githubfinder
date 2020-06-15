@@ -85,6 +85,17 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/share_repo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/default_margin_small"
+                android:background="@color/colorPrimaryDark"
+                android:text="@string/share_this_repository"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/default_text_size_small" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detail_recycler_view"
                 android:layout_width="match_parent"
