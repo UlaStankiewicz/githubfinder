@@ -1,5 +1,9 @@
 package pl.nataliana.githubfinder.ui.main
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.ext.android.inject
 import pl.nataliana.githubfinder.R
 import pl.nataliana.githubfinder.adapter.GithubRepositoryAdapter
@@ -17,11 +20,11 @@ import pl.nataliana.githubfinder.adapter.RepositoryListener
 import pl.nataliana.githubfinder.databinding.FragmentMainBinding
 import pl.nataliana.githubfinder.gone
 import pl.nataliana.githubfinder.model.GithubRepository
-import pl.nataliana.githubfinder.model.Owner
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModel
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModelFactory
 import pl.nataliana.githubfinder.toast
 import pl.nataliana.githubfinder.visible
+
 
 class MainFragment : Fragment() {
 
@@ -30,8 +33,8 @@ class MainFragment : Fragment() {
     // TODO this is a variable which will hold cached list
     private var cachedRepositoryList: List<GithubRepository> =
         mutableListOf(
-            GithubRepository(Owner("natansalda"), "mywine", 123233),
-            GithubRepository(Owner("bright"), "shouldko", 122311654)
+//            GithubRepository(Owner("natansalda"), "mywine", 214128989),
+//            GithubRepository(Owner("bright"), "shouldko", 109189120)
         )
 
     override fun onCreateView(
@@ -55,15 +58,11 @@ class MainFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.repositoryListViewModel = repositoryListViewModel
         binding.searchForRepo.setOnClickListener {
-            val userInput = binding.userInputRepo.text.toString().trim()
-            val userInputAfterSplit = userInput.split("/").toTypedArray()
-            val searchedUser = userInputAfterSplit.first()
-            val searchedRepo = userInputAfterSplit.last()
 
-            if (userInput.contains(SLASH)) {
-                setSearchButton(searchedUser, searchedRepo)
+            if (checkForInternetConnection(requireContext())) {
+                searchForRepository(binding)
             } else {
-                requireActivity().toast(getString(R.string.toast_no_slash_in_search))
+                requireActivity().toast(getString(R.string.no_internet_connection))
             }
         }
 
@@ -79,8 +78,38 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
+    private fun checkForInternetConnection(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val network = connectivityManager.activeNetwork ?: return false
+            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        } else {
+            val networkInfo = connectivityManager.activeNetworkInfo ?: return false
+            return networkInfo.isConnected
+        }
+    }
+
+    private fun searchForRepository(binding: FragmentMainBinding) {
+        val userInput = binding.userInputRepo.text.toString().trim()
+        val userInputAfterSplit = userInput.split("/").toTypedArray()
+        val searchedUser = userInputAfterSplit.first()
+        val searchedRepo = userInputAfterSplit.last()
+
+        if (userInput.contains(SLASH)) {
+            setSearchButton(searchedUser, searchedRepo)
+        } else {
+            requireActivity().toast(getString(R.string.toast_no_slash_in_search))
+        }
+    }
+
     private fun showListOfCachedRepos() {
-        repoViewModel.getCachedRepositories()?.observe(this,
+        repoViewModel.getCachedRepositories()?.observe(viewLifecycleOwner,
             Observer<List<GithubRepository>> { cachedRepositoryList ->
                 cachedRepositoryList?.let {
                     mainAdapter.submitList(it)
