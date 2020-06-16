@@ -4,7 +4,7 @@
     <string name="main_fragment">MainFragment</string>
     <string name="detail_fragment">DetailFragment</string>
     <string name="repo_detail_fragment_title">Repository details</string>
-    <string name="previously_searched_repositories">Previously searched repositories</string>
+    <string name="previously_searched_repositories">Previously searched repositories:</string>
     <string name="commit_message">Commit message:</string>
     <string name="sha">SHA:</string>
     <string name="author">Author:</string>
