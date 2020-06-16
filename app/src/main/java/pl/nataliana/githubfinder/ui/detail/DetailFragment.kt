@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +24,6 @@ import pl.nataliana.githubfinder.model.GithubRepository
 import pl.nataliana.githubfinder.model.RepositoryCommits
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModel
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModelFactory
-import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModel
 import pl.nataliana.githubfinder.service.GithubFinderApiClient
 import pl.nataliana.githubfinder.service.base.Resource
 import pl.nataliana.githubfinder.service.base.Status
@@ -39,9 +37,7 @@ class DetailFragment : Fragment() {
     private lateinit var detailAdapter: GithubRepositoryDetailAdapter
     private lateinit var githubRepositoryAdapter: GithubRepositoryAdapter
     private val githubFinderApiClient: GithubFinderApiClient by inject()
-    private val repoViewModel: RepositoryListViewModel by inject()
     private lateinit var binding: FragmentDetailBinding
-    private lateinit var bindingCommits: FragmentDetailBinding
     private var userLogin: String = ""
     private var repoName: String = ""
     private lateinit var repositoryResponse: Resource<GithubRepository>

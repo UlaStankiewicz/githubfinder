@@ -5,11 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import org.koin.experimental.property.inject
 import pl.nataliana.githubfinder.databinding.RepoDetailItemBinding
-import pl.nataliana.githubfinder.model.GithubRepository
 import pl.nataliana.githubfinder.model.RepositoryCommitsItem
-import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModel
 
 class GithubRepositoryDetailAdapter(private val commitClickListener: RepositoryDetailListener)  :
     ListAdapter<RepositoryCommitsItem, GithubRepositoryDetailAdapter.ViewHolder>(
