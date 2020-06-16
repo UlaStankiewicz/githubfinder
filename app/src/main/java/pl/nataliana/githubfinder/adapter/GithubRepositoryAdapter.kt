@@ -11,7 +11,7 @@ import pl.nataliana.githubfinder.model.GithubRepository
 class GithubRepositoryAdapter(private val clickListener: RepositoryListener) :
     ListAdapter<GithubRepository, GithubRepositoryAdapter.ViewHolder>(GithubRepositoryDiffCallback()) {
 
-    private var mRepository: GithubRepository? = null
+    private var repository: GithubRepository? = null
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(clickListener, getItem(position)!!)
@@ -22,7 +22,7 @@ class GithubRepositoryAdapter(private val clickListener: RepositoryListener) :
     }
 
     fun updateGithubRepository(repository: GithubRepository?) {
-        mRepository = repository
+        this.repository = repository
         notifyDataSetChanged()
     }
 

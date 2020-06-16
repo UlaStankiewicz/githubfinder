@@ -15,9 +15,6 @@ val uiModule = module {
 
 val uiDetailModule = module {
     viewModel {
-        RepositoryDetailViewModel(
-            get(),
-            get()
-        )
+        RepositoryDetailViewModel()
     }
 }

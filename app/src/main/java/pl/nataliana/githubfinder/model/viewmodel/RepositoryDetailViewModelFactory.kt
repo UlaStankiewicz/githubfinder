@@ -10,10 +10,7 @@ class RepositoryDetailViewModelFactory(
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RepositoryDetailViewModel::class.java)) {
-            return RepositoryDetailViewModel(
-                userLogin,
-                repoName
-            ) as T
+            return RepositoryDetailViewModel() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

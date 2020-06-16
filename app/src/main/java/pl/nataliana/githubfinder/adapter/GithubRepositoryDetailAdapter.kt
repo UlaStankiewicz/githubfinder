@@ -5,16 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import org.koin.experimental.property.inject
 import pl.nataliana.githubfinder.databinding.RepoDetailItemBinding
-import pl.nataliana.githubfinder.model.RepositoryCommits
+import pl.nataliana.githubfinder.model.GithubRepository
 import pl.nataliana.githubfinder.model.RepositoryCommitsItem
+import pl.nataliana.githubfinder.model.viewmodel.RepositoryDetailViewModel
 
-class GithubRepositoryDetailAdapter :
+class GithubRepositoryDetailAdapter(private val commitClickListener: RepositoryDetailListener)  :
     ListAdapter<RepositoryCommitsItem, GithubRepositoryDetailAdapter.ViewHolder>(
         RepositoryCommitsDiffCallback()
     ) {
 
-    private var mList: List<RepositoryCommitsItem>? = null
+    private var commitsList: List<RepositoryCommitsItem>? = null
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!)
@@ -25,7 +27,7 @@ class GithubRepositoryDetailAdapter :
     }
 
     fun updateList(list: List<RepositoryCommitsItem>?) {
-        mList = list
+        commitsList = list
         notifyDataSetChanged()
     }
 
@@ -58,4 +60,8 @@ class RepositoryCommitsDiffCallback :
     override fun areContentsTheSame(oldItem: RepositoryCommitsItem, newItem: RepositoryCommitsItem): Boolean {
         return oldItem == newItem
     }
+}
+
+class RepositoryDetailListener(val commitClickListener: (sha: String) -> Unit) {
+    fun onClick(commit: RepositoryCommitsItem) = commitClickListener(commit.sha)
 }

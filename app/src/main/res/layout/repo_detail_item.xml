@@ -7,6 +7,7 @@
         <variable
             name="repositoryDetails"
             type="pl.nataliana.githubfinder.model.RepositoryCommitsItem" />
+
     </data>
 
     <LinearLayout
@@ -44,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="@string/example_message"
-                    app:commitMessage="@{repositoryDetails}"
+                    app:commitMessage="@{repositoryDetails.commit.message}"
                     android:textSize="@dimen/default_text_size_small" />
             </LinearLayout>
 
@@ -69,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="@string/example_sha"
-                    app:commitSha="@{repositoryDetails}"
+                    app:commitSha="@{repositoryDetails.sha}"
                     android:textSize="@dimen/default_text_size_small" />
             </LinearLayout>
 
@@ -94,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="@string/example_author"
-                    app:commitAuthor="@{repositoryDetails}"
+                    app:commitAuthor="@{repositoryDetails.commit.author.name}"
                     android:textSize="@dimen/default_text_size_small" />
             </LinearLayout>
         </LinearLayout>

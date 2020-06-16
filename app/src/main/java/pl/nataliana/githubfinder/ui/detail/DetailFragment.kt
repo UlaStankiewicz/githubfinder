@@ -18,7 +18,7 @@ import org.koin.android.ext.android.inject
 import pl.nataliana.githubfinder.R
 import pl.nataliana.githubfinder.adapter.GithubRepositoryAdapter
 import pl.nataliana.githubfinder.adapter.GithubRepositoryDetailAdapter
-import pl.nataliana.githubfinder.adapter.RepositoryListener
+import pl.nataliana.githubfinder.adapter.RepositoryDetailListener
 import pl.nataliana.githubfinder.databinding.FragmentDetailBinding
 import pl.nataliana.githubfinder.gone
 import pl.nataliana.githubfinder.model.GithubRepository
@@ -29,7 +29,6 @@ import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModel
 import pl.nataliana.githubfinder.service.GithubFinderApiClient
 import pl.nataliana.githubfinder.service.base.Resource
 import pl.nataliana.githubfinder.service.base.Status
-import pl.nataliana.githubfinder.ui.main.MainFragmentDirections
 import pl.nataliana.githubfinder.visible
 import timber.log.Timber
 
@@ -42,6 +41,7 @@ class DetailFragment : Fragment() {
     private val githubFinderApiClient: GithubFinderApiClient by inject()
     private val repoViewModel: RepositoryListViewModel by inject()
     private lateinit var binding: FragmentDetailBinding
+    private lateinit var bindingCommits: FragmentDetailBinding
     private var userLogin: String = ""
     private var repoName: String = ""
     private lateinit var repositoryResponse: Resource<GithubRepository>
@@ -75,11 +75,9 @@ class DetailFragment : Fragment() {
         binding.repositoryDetailViewModel = repositoryDetailViewModel
         binding.lifecycleOwner = this
 
-        detailAdapter = GithubRepositoryDetailAdapter()
-        // TODO change this logic, as this is not needed here
-        githubRepositoryAdapter =
-            GithubRepositoryAdapter(RepositoryListener { userLogin, repoName ->
-                setClick(userLogin, repoName)
+        detailAdapter =
+            GithubRepositoryDetailAdapter(RepositoryDetailListener { sha ->
+                setClick(sha)
             })
         binding.detailRecyclerView.adapter = detailAdapter
 
@@ -159,6 +157,12 @@ class DetailFragment : Fragment() {
                             })
                         binding.detailRecyclerView.adapter = detailAdapter
                         commitsResponse = response
+                        for (commit in 0..it.size) {
+                            //TODO make binding working
+//                            binding.detailRecyclerView.commit_message.text = it[commit].commit.message
+//                            binding.detailRecyclerView.commit_sha.text = it[commit].sha
+//                            binding.detailRecyclerView.commit_author.text = it[commit].commit.author.name
+                        }
                     }
                     else -> {
                         Timber.i("ERROR: Couldn't find repository commits: $response")
@@ -177,11 +181,7 @@ class DetailFragment : Fragment() {
         binding.textViewSlash.gone()
     }
 
-    private fun setClick(name: String, repo: String) {
-        view?.findNavController()?.navigate(
-            MainFragmentDirections
-                .actionMainFragmentToDetailFragment(name, repo)
-        )
-        repoViewModel.onRepoDetailNavigated()
+    private fun setClick(sha: String) {
+        // TODO implement logic to allows select particular commit to share with share button
     }
 }
