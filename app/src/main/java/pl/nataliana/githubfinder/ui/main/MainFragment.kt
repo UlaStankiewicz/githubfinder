@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -15,6 +16,8 @@ import pl.nataliana.githubfinder.adapter.GithubRepositoryAdapter
 import pl.nataliana.githubfinder.adapter.RepositoryListener
 import pl.nataliana.githubfinder.databinding.FragmentMainBinding
 import pl.nataliana.githubfinder.gone
+import pl.nataliana.githubfinder.model.GithubRepository
+import pl.nataliana.githubfinder.model.Owner
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModel
 import pl.nataliana.githubfinder.model.viewmodel.RepositoryListViewModelFactory
 import pl.nataliana.githubfinder.toast
@@ -24,6 +27,12 @@ class MainFragment : Fragment() {
 
     private lateinit var mainAdapter: GithubRepositoryAdapter
     private val repoViewModel: RepositoryListViewModel by inject()
+    // TODO this is a variable which will hold cached list
+    private var cachedRepositoryList: List<GithubRepository> =
+        mutableListOf(
+            GithubRepository(Owner("natansalda"), "mywine", 123233),
+            GithubRepository(Owner("bright"), "shouldko", 122311654)
+        )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,12 +70,22 @@ class MainFragment : Fragment() {
         mainAdapter = GithubRepositoryAdapter(RepositoryListener { userLogin, repoName ->
             setClick(userLogin, repoName)
         })
+        showListOfCachedRepos()
         binding.recyclerView.adapter = mainAdapter
 
-        checkIfRecyclerViewIsEmpty()
+        checkIfRecyclerViewIsEmpty(binding, cachedRepositoryList)
         activity?.title = getString(R.string.app_name_title)
 
         return binding.root
+    }
+
+    private fun showListOfCachedRepos() {
+        repoViewModel.getCachedRepositories()?.observe(this,
+            Observer<List<GithubRepository>> { cachedRepositoryList ->
+                cachedRepositoryList?.let {
+                    mainAdapter.submitList(it)
+                }
+            })
     }
 
     private fun setSearchButton(userLogin: String, repoName: String) {
@@ -78,10 +97,10 @@ class MainFragment : Fragment() {
         repoViewModel.onRepoDetailNavigated()
     }
 
-    private fun checkIfRecyclerViewIsEmpty() {
-        if (mainAdapter.itemCount != 0) {
-            empty_view_layout.gone()
-            previously_searched_text_view.visible()
+    private fun checkIfRecyclerViewIsEmpty(binding: FragmentMainBinding, list: List<GithubRepository>) {
+        if (list.isNotEmpty()) {
+            binding.emptyViewLayout.gone()
+            binding.previouslySearchedTextView.visible()
         }
     }
 

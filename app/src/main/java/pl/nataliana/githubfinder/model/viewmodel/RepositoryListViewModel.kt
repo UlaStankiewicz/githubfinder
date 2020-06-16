@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Job
 import pl.nataliana.githubfinder.model.GithubRepository
+import pl.nataliana.githubfinder.model.Owner
 
 class RepositoryListViewModel(
     application: Application
@@ -14,6 +15,7 @@ class RepositoryListViewModel(
 
     private var viewModelJob = Job()
     val githubRepository: ObservableField<GithubRepository> = ObservableField()
+    private var cachedRepositories: LiveData<List<GithubRepository>>? = null
 
     private val _navigateToRepoDetail = MutableLiveData<GithubRepository>()
     val navigateToRepoDetail: LiveData<GithubRepository>
@@ -22,6 +24,11 @@ class RepositoryListViewModel(
     private val _navigateToMainFragment = MutableLiveData<Long>()
     val navigateToMainFragment
         get() = _navigateToMainFragment
+
+    // TODO method to update searched repositories list
+    fun getCachedRepositories(): LiveData<List<GithubRepository>>? {
+        return cachedRepositories
+    }
 
     fun onRepoDetailNavigated() {
         _navigateToRepoDetail.value = null

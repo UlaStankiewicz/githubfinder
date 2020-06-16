@@ -7,11 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.nataliana.githubfinder.databinding.RepoItemBinding
 import pl.nataliana.githubfinder.model.GithubRepository
+import pl.nataliana.githubfinder.model.RepositoryCommitsItem
 
 class GithubRepositoryAdapter(private val clickListener: RepositoryListener) :
     ListAdapter<GithubRepository, GithubRepositoryAdapter.ViewHolder>(GithubRepositoryDiffCallback()) {
 
-    private var repository: GithubRepository? = null
+    private lateinit var searchedRepositoryList: List<GithubRepository>
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(clickListener, getItem(position)!!)
@@ -19,11 +20,6 @@ class GithubRepositoryAdapter(private val clickListener: RepositoryListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
-    }
-
-    fun updateGithubRepository(repository: GithubRepository?) {
-        this.repository = repository
-        notifyDataSetChanged()
     }
 
     class ViewHolder private constructor(private val binding: RepoItemBinding) :

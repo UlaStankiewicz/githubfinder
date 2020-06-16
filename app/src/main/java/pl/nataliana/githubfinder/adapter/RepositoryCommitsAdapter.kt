@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.nataliana.githubfinder.databinding.RepoDetailItemBinding
 import pl.nataliana.githubfinder.model.RepositoryCommitsItem
 
-class GithubRepositoryDetailAdapter(private val commitClickListener: RepositoryDetailListener)  :
-    ListAdapter<RepositoryCommitsItem, GithubRepositoryDetailAdapter.ViewHolder>(
+class RepositoryCommitsAdapter(private val commitClickListener: RepositoryDetailListener)  :
+    ListAdapter<RepositoryCommitsItem, RepositoryCommitsAdapter.ViewHolder>(
         RepositoryCommitsDiffCallback()
     ) {
 
