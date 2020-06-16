@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -133,31 +132,18 @@ class DetailFragment : Fragment() {
             )
             Timber.i("Response: $response")
 
-            response.data?.let {
-                when (response.status) {
-                    Status.SUCCESS -> {
-                        for (commit in 0..it.size) {
-                            // TODO make binding working
-//                            binding.detailRecyclerView.commit_message.text =
-//                                it[commit].commit.message
-//                            binding.detailRecyclerView.commit_sha.text = it[commit].sha
-//                            binding.detailRecyclerView.commit_author.text =
-//                                it[commit].commit.author.name
-                        }
-                        repositoryDetailViewModel.repositoryCommits.observe(
-                            viewLifecycleOwner,
-                            Observer { response ->
-                                commitsAdapter.updateList(response)
-                            })
-                        binding.detailRecyclerView.adapter = commitsAdapter
-                        commitsResponse = response
+            when (response.status) {
+                Status.SUCCESS -> {
+                    response.data?.let {
+                        commitsAdapter.updateList(response.data)
                     }
-                    else -> {
-                        Timber.i("ERROR: Couldn't find repository commits: $response")
-                    }
+                    commitsResponse = response
+                }
+                else -> {
+                    Timber.i("ERROR: Couldn't find repository commits: $response")
                 }
             }
-        }
+            }
         binding.shareRepo.setOnClickListener {
             shareRepositoryCommits()
         }
